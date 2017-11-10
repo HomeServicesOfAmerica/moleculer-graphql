@@ -12,8 +12,8 @@ import { printSchema, parse } from 'graphql';
 import difference from 'lodash.difference';
 import selectn from 'selectn';
 import fs from 'fs';
-import createRemoteSchema from './createRemoteSchema';
-import buildRelationalResolvers from './buildRelationalResolvers';
+import { createRemoteSchema } from './createRemoteSchema';
+import { buildRelationalResolvers } from './buildRelationalResolvers';
 import { getRelatedTypes } from './utilities';
 
 import type { GraphQLSchema, DocumentNode } from 'graphql';
@@ -44,7 +44,7 @@ type GraphQLTypeServiceMap = {
   [type: GraphQLTypeName]: ServiceName
 };
 
-export default class GraphQLGateway {
+export class GraphQLGateway {
   // Services to ignore
   blacklist: Array<string> = ['$node'];
   // Passed in service broker used to make calls

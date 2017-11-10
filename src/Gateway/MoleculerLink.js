@@ -37,7 +37,7 @@ function createMoleculerLink(opts: ServiceOptions): ApolloLink {
   );
 }
 
-export default class MoleculerLink extends ApolloLink {
+export class MoleculerLink extends ApolloLink {
   requester: RequestHandler;
 
   constructor(opts: ServiceOptions) {

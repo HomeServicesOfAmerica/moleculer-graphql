@@ -19,6 +19,10 @@ This class is where the magic happens. This is all you need to create a GraphQL 
   gateway = new GraphQLGateway({
     broker,
   });
+
+  gateway.start().then(() => {
+    console.log('gateway is ready! Schema is accessible via gateway.schema');
+  });
 ```
 
 The gateway will register a service on this broker that listens for nodes connecting to the network and updates the schema dynamically anytime a GraphQL service joins the network. It will also initialize the schema by checking already connected services for schemas.
@@ -122,3 +126,17 @@ export default {
 ```
 
 Now the schema is attached to the service and will be discovered by the GraphQLGateway!
+
+## how to use
+```yarn add moleculer-graphql```
+
+Then in your code:
+```js
+import { GraphQLGateway, createGraphqlMixin } from 'moleculer-graphql';
+```
+
+for Node 6:
+```js
+import { GraphQLGateway, createGraphqlMixin } from 'moleculer-graphql/node6';
+```
+

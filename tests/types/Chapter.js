@@ -1,4 +1,4 @@
-import createGraphqlMixin from '../../src/createGraphqlMixin';
+import { createGraphqlMixin } from '../../src/createGraphqlMixin';
 import { chapters } from './data';
 
 const schema = `
