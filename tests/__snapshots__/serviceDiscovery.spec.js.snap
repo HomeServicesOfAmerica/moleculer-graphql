@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Service Discovery Starting gateway up should wait for necessary types before producing a schema 1`] = `
+GraphQLSchema {
+  "_directives": Array [
+    GraphQLDirective {
+      "args": Array [
+        Object {
+          "astNode": undefined,
+          "defaultValue": undefined,
+          "description": "Included when true.",
+          "name": "if",
+          "type": "Boolean!",
+        },
+      ],
+      "astNode": undefined,
+      "description": "Directs the executor to include this field or fragment only when the \`if\` argument is true.",
+      "locations": Array [
+        "FIELD",
+        "FRAGMENT_SPREAD",
+        "INLINE_FRAGMENT",
+      ],
+      "name": "include",
+    },
+    GraphQLDirective {
+      "args": Array [
+        Object {
+          "astNode": undefined,
+          "defaultValue": undefined,
+          "description": "Skipped when true.",
+          "name": "if",
+          "type": "Boolean!",
+        },
+      ],
+      "astNode": undefined,
+      "description": "Directs the executor to skip this field or fragment when the \`if\` argument is true.",
+      "locations": Array [
+        "FIELD",
+        "FRAGMENT_SPREAD",
+        "INLINE_FRAGMENT",
+      ],
+      "name": "skip",
+    },
+    GraphQLDirective {
+      "args": Array [
+        Object {
+          "astNode": undefined,
+          "defaultValue": "No longer supported",
+          "description": "Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted in [Markdown](https://daringfireball.net/projects/markdown/).",
+          "name": "reason",
+          "type": "String",
+        },
+      ],
+      "astNode": undefined,
+      "description": "Marks an element of a GraphQL schema as no longer supported.",
+      "locations": Array [
+        "FIELD_DEFINITION",
+        "ENUM_VALUE",
+      ],
+      "name": "deprecated",
+    },
+  ],
+  "_implementations": Object {},
+  "_mutationType": "Mutation",
+  "_queryType": "Query",
+  "_subscriptionType": null,
+  "_typeMap": Object {
+    "Author": "Author",
+    "Book": "Book",
+    "Boolean": "Boolean",
+    "Chapter": "Chapter",
+    "Int": "Int",
+    "Mutation": "Mutation",
+    "Query": "Query",
+    "String": "String",
+    "UpdateAuthorInput": "UpdateAuthorInput",
+    "UpdateAuthorPayload": "UpdateAuthorPayload",
+    "__Directive": "__Directive",
+    "__DirectiveLocation": "__DirectiveLocation",
+    "__EnumValue": "__EnumValue",
+    "__Field": "__Field",
+    "__InputValue": "__InputValue",
+    "__Schema": "__Schema",
+    "__Type": "__Type",
+    "__TypeKind": "__TypeKind",
+  },
+  "astNode": null,
+}
+`;

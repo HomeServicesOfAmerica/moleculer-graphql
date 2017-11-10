@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Schema Generation With A Single Broker Should generate a consistant schema 1`] = `
+"type Author {
+  id: Int
+  name: String
+  books: [Book]
+}
+
+type Book {
+  id: Int
+  title: String
+  authorId: Int
+  year: Int
+  author: Author
+  chapters: [Chapter]
+}
+
+type Chapter {
+  id: Int
+  title: String
+  bookId: Int
+  book: Book
+}
+
+type Mutation {
+  updateAuthor(input: UpdateAuthorInput!): UpdateAuthorPayload
+}
+
+type Query {
+  author(id: Int!): Author
+  authorOf(bookId: Int!): Author
+  authors: [Author]
+  book(id: Int!): Book
+  books: [Book]
+  booksByAuthor(authorId: Int!): [Book]
+  chapter(id: Int!): Chapter
+  chapters: [Chapter]
+  chaptersInBook(bookId: Int!): [Chapter]
+}
+
+input UpdateAuthorInput {
+  id: Int!
+  clientMutationId: Int!
+  name: String
+}
+
+type UpdateAuthorPayload {
+  author: Author
+  clientMutationId: Int
+}
+"
+`;
+
+exports[`Schema Generation With Multiple Brokers Should generate a consistant schema 1`] = `
+"type Author {
+  id: Int
+  name: String
+  books: [Book]
+}
+
+type Book {
+  id: Int
+  title: String
+  authorId: Int
+  year: Int
+  author: Author
+  chapters: [Chapter]
+}
+
+type Chapter {
+  id: Int
+  title: String
+  bookId: Int
+  book: Book
+}
+
+type Mutation {
+  updateAuthor(input: UpdateAuthorInput!): UpdateAuthorPayload
+}
+
+type Query {
+  author(id: Int!): Author
+  authorOf(bookId: Int!): Author
+  authors: [Author]
+  book(id: Int!): Book
+  books: [Book]
+  booksByAuthor(authorId: Int!): [Book]
+  chapter(id: Int!): Chapter
+  chapters: [Chapter]
+  chaptersInBook(bookId: Int!): [Chapter]
+}
+
+input UpdateAuthorInput {
+  id: Int!
+  clientMutationId: Int!
+  name: String
+}
+
+type UpdateAuthorPayload {
+  author: Author
+  clientMutationId: Int
+}
+"
+`;
