@@ -7,7 +7,7 @@ import {
 } from 'graphql-tools';
 import { graphql as execute } from 'graphql';
 
-const createGraphqlMixin = ({
+export const createGraphqlMixin = ({
   typeName,
   schema,
   resolvers,
@@ -48,5 +48,3 @@ const createGraphqlMixin = ({
     this.broker.broadcast('graphqlService.disconnected', { typeName });
   },
 });
-
-export default createGraphqlMixin;

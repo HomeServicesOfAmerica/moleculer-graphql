@@ -75,7 +75,7 @@ const getFieldResolvers = (
  * Builds a type map of resolvers that utilize mergeInfo to
  * stitch together the remote schemas they are attached to.
  */
-export default function generateResolvers(
+export function buildRelationalResolvers(
   typeDefinitions: TypeRelationDefinitions,
   validatedRelationalTypes?: Array<string>,
 ): getMergeSchemaResolver {

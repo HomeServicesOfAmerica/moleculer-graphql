@@ -1,8 +1,28 @@
 {
+  "comments": false,
   "plugins": [
+    "transform-class-properties",
     "transform-object-rest-spread",
     "add-module-exports",
-    "transform-class-properties"
   ],
-  "presets": ["env", "flow"]
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "8"
+      }
+    }],
+    "flow"
+  ],
+  "env": {
+    "node6": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "6"
+          }
+        }],
+        "flow"
+      ]
+    }
+  }
 }

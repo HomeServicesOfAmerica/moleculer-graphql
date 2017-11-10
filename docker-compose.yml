@@ -1,0 +1,7 @@
+version: '2'
+services:
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto
+    ports:
+      - '1883:1883'
