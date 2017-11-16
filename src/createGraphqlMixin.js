@@ -39,7 +39,7 @@ export const createGraphqlMixin = ({
   started() {
     this.broker.broadcast('graphqlService.connected', {
       typeName,
-      scema,
+      schema,
       relationships,
       relationDefinitions,
     });
