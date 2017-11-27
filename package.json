@@ -8,7 +8,7 @@
     "build": "yarn clean && yarn build:node8 && yarn build:node6",
     "build:node8": "babel src -d lib",
     "build:node6": "BABEL_ENV=node6 babel src -d node6",
-    "test": "docker-compose up -d mqtt && sleep 5 && jest"
+    "test": "yarn build && docker-compose up -d mqtt && sleep 5 && jest"
   },
   "main": "lib/index.js",
   "author": "Brad Decker",

@@ -1,7 +1,7 @@
 import { ServiceBroker, Transporters } from 'moleculer';
 import { graphql as execute, printSchema } from 'graphql';
 import { promisify } from 'util';
-import { GraphQLGateway } from '../src/Gateway/GraphQLGateway';
+import { GraphQLGateway } from '..';
 import authorSvc from './types/Author';
 import bookSvc from './types/Book';
 import chapterSvc from './types/chapter';
