@@ -14,7 +14,7 @@ describe('Service Discovery', () => {
   let bookBroker;
   let chapterBroker;
   let gateway;
-  let onServiceDiscovery;
+  let onSchemaDiscovery;
   let handleNodeConnectionSpy;
 
   beforeAll(() => {
@@ -26,11 +26,10 @@ describe('Service Discovery', () => {
 
     broker.start();
 
-    onServiceDiscovery = jest.fn();
+    onSchemaDiscovery = jest.fn();
 
-    gateway = new GraphQLGateway({
-      broker,
-      onServiceDiscovery,
+    gateway = new GraphQLGateway(broker, {
+      onSchemaDiscovery,
     });
 
     authorBroker = new ServiceBroker({
@@ -67,23 +66,25 @@ describe('Service Discovery', () => {
     expect(gateway.service.name).toBe('gateway');
   });
 
-  test('Starting a broker with a type service should be discovered by main broker', async () => {
-    await authorBroker.start();
+  test('Starting a broker with a type service should be discovered by main broker', (done) => {
+    authorBroker.start()
+      .then(() => waitFor(500))
+      .then(() => {
+        const authorService = authorBroker.getLocalService('Author');
+        expect(onSchemaDiscovery).toHaveBeenCalledTimes(1);
+        expect(onSchemaDiscovery.mock.calls[0][0].serviceName).toBe('Author');
+        expect(gateway.discoveredGraphQLTypes).toContain('Author');
+        onSchemaDiscovery.mockReset();
+        done();
+      });
 
-    const authorService = authorBroker.getLocalService('Author');
-
-    expect(onServiceDiscovery).toHaveBeenCalledTimes(1);
-    expect(onServiceDiscovery.mock.calls[0][0].name).toBe('Author');
-    expect(gateway.discoveredTypes.Author).toBeDefined();
-    onServiceDiscovery.mockReset();
   });
 
   test('Should fail if all required services cannot be found within the timeout', async () => {
     const testBroker = new ServiceBroker({
       nodeID: 'test',
     });
-    const g = new GraphQLGateway({
-      broker: testBroker,
+    const g = new GraphQLGateway(testBroker, {
       waitTimeout: 300,
     });
     await expect(g.start()).rejects.toHaveProperty('message', 'Timeout');
@@ -91,10 +92,11 @@ describe('Service Discovery', () => {
 
   test('Starting gateway up should wait for necessary types before producing a schema', (done) => {
     gateway.start().then(() => {
-      expect(onServiceDiscovery).toHaveBeenCalledTimes(2);
-      expect(gateway.discoveredTypes.Book).toBeDefined();
-      expect(gateway.discoveredTypes.Chapter).toBeDefined();
+      expect(onSchemaDiscovery).toHaveBeenCalledTimes(2);
+      expect(gateway.discoveredGraphQLTypes).toContain('Book');
+      expect(gateway.discoveredGraphQLTypes).toContain('Chapter');
       expect(gateway.schema).toMatchSnapshot();
+      onSchemaDiscovery.mockReset();
       done();
     });
     bookBroker.start();

@@ -8,14 +8,12 @@ import {
 import { graphql as execute } from 'graphql';
 
 export const createGraphqlMixin = ({
-  typeName,
   schema,
   resolvers,
   relationships,
   relationDefinitions
 }) => ({
   settings: {
-    typeName,
     schema,
     relationships,
     relationDefinitions,
@@ -28,23 +26,34 @@ export const createGraphqlMixin = ({
         variables: { type: 'object', optional: true },
       },
       handler(ctx) {
-        return execute(this.schema, ctx.params.query, this.resolvers, ctx, ctx.params.variables);
+        return execute(
+          this.graphqlSchema,
+          ctx.params.query,
+          this.resolvers,
+          ctx,
+          ctx.params.variables
+        );
       },
     },
   },
   created() {
     this.resolvers = resolvers;
-    this.schema = makeExecutableSchema({ typeDefs: [schema], resolvers });
+    this.graphqlSchema = makeExecutableSchema({ typeDefs: [schema], resolvers });
   },
   started() {
     this.broker.broadcast('graphqlService.connected', {
-      typeName,
       schema,
+      serviceName: this.name,
       relationships,
       relationDefinitions,
     });
   },
   stopped() {
-    this.broker.broadcast('graphqlService.disconnected', { typeName });
+    this.broker.broadcast('graphqlService.disconnected', {
+      schema,
+      serviceName: this.name,
+      relationships,
+      relationDefinitions,
+    });
   },
 });

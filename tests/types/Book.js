@@ -14,6 +14,21 @@ const schema = `
     books: [Book],
     booksByAuthor(authorId: Int!): [Book],
   }
+
+  input UpdateBookInput {
+    id: Int!
+    clientMutationId: Int!
+    title: String
+  }
+
+  type UpdateBookPayload {
+    book: Book
+    clientMutationId: Int
+  }
+
+  type Mutation {
+    updateBook(input: UpdateBookInput!): UpdateBookPayload,
+  }
 `;
 
 const relationships = `
@@ -40,18 +55,29 @@ const relationDefinitions = {
   },
 };
 
-const queries = {
+const Query = {
   books: () => books,
   book: (_, { id }) => books.find(book => book.id === id),
   booksByAuthor: (_, { authorId }) => books.filter(book => book.authorId === authorId),
 };
 
+const Mutation = {
+  updateBook(_, { id, title, clientMutationId }) {
+    const bookIdx = books.findIndex(book => book.id === id);
+    const book = books[authorIdx];
+    if (!title) return book;
+    book.title = title;
+    books[authorIdx] = book;
+    return { book, clientMutationId };
+  }
+}
+
 const resolvers = {
-  Query: queries,
+  Query,
+  Mutation,
 };
 
 const bookGraphQL = createGraphqlMixin({
-  typeName: 'Book',
   schema,
   resolvers,
   relationships,

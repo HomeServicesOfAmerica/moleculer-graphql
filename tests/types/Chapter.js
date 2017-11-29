@@ -42,7 +42,6 @@ const resolvers = {
 };
 
 const chapterGraphQL = createGraphqlMixin({
-  typeName: 'Chapter',
   schema,
   resolvers,
   relationships,

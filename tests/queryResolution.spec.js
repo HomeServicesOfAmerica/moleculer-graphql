@@ -170,14 +170,12 @@ const runSuites = (suiteName, buildQueryResolver) => {
 
         ref.broker.start();
 
-        ref.gateway = new GraphQLGateway({
-          broker: ref.broker,
-        });
+        ref.gateway = new GraphQLGateway(ref.broker);
 
         return ref.gateway.start();
       });
 
-      afterAll(() => ref.broker.stop());
+      afterAll(() => ref.gateway.stop());
 
       runTests(buildQueryResolver({ ref, clientKey: 'broker' }));
     });
@@ -196,26 +194,31 @@ const runSuites = (suiteName, buildQueryResolver) => {
       beforeAll(() => {
         ref.client = new ServiceBroker({
           nodeID: 'client',
+          namespace: 'queryResolution',
           transporter: new Transporters.MQTT('mqtt://localhost:1883')
         });
 
         ref.broker = new ServiceBroker({
           nodeID: 'gatewayMultiple',
+          namespace: 'queryResolution',
           transporter: new Transporters.MQTT('mqtt://localhost:1883')
         });
 
         ref.authorBroker = new ServiceBroker({
           nodeID: 'author',
+          namespace: 'queryResolution',
           transporter: new Transporters.MQTT('mqtt://localhost:1883')
         });
 
         ref.bookBroker = new ServiceBroker({
           nodeID: 'book',
+          namespace: 'queryResolution',
           transporter: new Transporters.MQTT('mqtt://localhost:1883')
         });
 
         ref.chapterBroker = new ServiceBroker({
           nodeID: 'chapter',
+          namespace: 'queryResolution',
           transporter: new Transporters.MQTT('mqtt://localhost:1883')
         });
 
@@ -223,16 +226,13 @@ const runSuites = (suiteName, buildQueryResolver) => {
         ref.bookBroker.createService(bookSvc);
         ref.chapterBroker.createService(chapterSvc);
 
-        ref.gateway = new GraphQLGateway({
-          broker: ref.broker,
-        });
+        ref.gateway = new GraphQLGateway(ref.broker);
 
         return Promise.all([
           ref.client.start(),
           ref.authorBroker.start(),
           ref.bookBroker.start(),
           ref.chapterBroker.start(),
-          ref.broker.start(),
           ref.gateway.start(),
         ])
       });
@@ -242,7 +242,7 @@ const runSuites = (suiteName, buildQueryResolver) => {
         ref.authorBroker.stop(),
         ref.bookBroker.stop(),
         ref.chapterBroker.stop(),
-        ref.broker.stop(),
+        ref.gateway.stop(),
       ]))
 
       runTests(buildQueryResolver({ ref, clientKey: 'client' }));

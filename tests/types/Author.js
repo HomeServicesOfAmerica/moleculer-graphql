@@ -1,7 +1,7 @@
 import { createGraphqlMixin } from '../../src/createGraphqlMixin';
 import { authors } from './data';
 
-const schema = `
+export const schema = `
   type Author {
     id: Int,
     name: String,
@@ -67,7 +67,6 @@ const resolvers = {
 };
 
 const authorGraphQL = createGraphqlMixin({
-  typeName: 'Author',
   schema,
   resolvers,
   relationships,

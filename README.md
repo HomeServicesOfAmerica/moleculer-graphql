@@ -16,9 +16,7 @@ Moleculer GraphQL provides a couple of tools to make this super easy.
 This class is where the magic happens. This is all you need to create a GraphQL api gateway into your microservice architecture. All that is required is that you provide it a moleculer broker that is configured to communicate with your other services on the network.
 
 ```js
-  gateway = new GraphQLGateway({
-    broker,
-  });
+  gateway = new GraphQLGateway(broker);
 
   gateway.start().then(() => {
     console.log('gateway is ready! Schema is accessible via gateway.schema');
@@ -28,6 +26,58 @@ This class is where the magic happens. This is all you need to create a GraphQL 
 The gateway will register a service on this broker that listens for nodes connecting to the network and updates the schema dynamically anytime a GraphQL service joins the network. It will also initialize the schema by checking already connected services for schemas.
 
 When the gateway discovers a new GraphQL service it will grab values from the network that are provided via the createGraphqlMixin generated moleculer mixin. The details provided here are enough to use Apollo Link and Schema Stitching to build a collection of remote schemas with interdependcies that traverse the network to fulfill data requirements.
+
+##### options
+In addition to providing the broker you may also provide an object as the second argument with some configuration options. The list below shows the possible settings plus the default configuration.
+```js
+  gateway = new GraphQLGateway(broker, {
+    // An array of services you want to ignore if they connect
+    blacklist: [],
+    // An array of services you wish to wait for before .start is fulfilled
+    expectedServices: [],
+    // If true, will save a snapshot of your schema to a file you specify in snapshotPath
+    generateSnapshot: false,
+    // A method that if provided will be called when a new remote schema is discovered
+    onSchemaDiscovery: null,
+    // path to save the snapshot file to
+    snapshotPath: `${process.cwd()}/schema.snapshot.graphql`,
+    // maximum length of time in milliseconds to wait for services
+    waitTimeout: 5000,
+    // length of time in milliseconds to wait in between polling.
+    waitInterval: 100,
+  });
+```
+
+if you want to provide an onSchemaDiscovery handler, the format is as follow:
+```js
+const onSchemaDiscovery = (remoteSchemaDefinition) {
+  //NOOP
+}
+```
+
+The argument in this method has the following properties:
+
+```js
+/**
+ * RemoteSchemaDefinition
+ *
+ * This type defines the format of data expected from
+ * graphql services when they broadcast graphqlService.connected
+ * or graphqlService.disconnected
+ */
+type RemoteSchemaDefinition = {
+  // The raw string schema set in the service
+  schema: GraphQLRawSchema,
+  // The remoteExecutableSchema created after discovery
+  remoteExecutableSchema?: GraphQLSchema,
+  // The raw string schema defining relationships in the service
+  relationships: GraphQLRawSchema,
+  // An object defining how to handle relationships set in the service
+  relationDefinitions: RelationDefinitions,
+  // The service name
+  serviceName: GraphQLServiceName,
+};
+```
 
 ### createGraphqlMixin
 
@@ -111,7 +161,6 @@ const resolvers = {
 
 // Call the createGraphqlMixin to build our mixin
 const authorGraphQL = createGraphqlMixin({
-  typeName: 'Author',
   schema,
   resolvers,
   relationships,
