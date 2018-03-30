@@ -12,13 +12,15 @@ export const createGraphqlMixin = ({
   schema,
   resolvers,
   relationships,
-  relationDefinitions
+  relationDefinitions,
+  directiveResolvers
 }) => ({
   settings: {
     typeName,
     schema,
     relationships,
     relationDefinitions,
+    directiveResolvers,
     hasGraphQLSchema: true,
   },
   actions: {
@@ -34,7 +36,7 @@ export const createGraphqlMixin = ({
   },
   created() {
     this.resolvers = resolvers;
-    this.schema = makeExecutableSchema({ typeDefs: [schema], resolvers });
+    this.schema = makeExecutableSchema({ typeDefs: [schema], resolvers, directiveResolvers });
   },
   started() {
     this.broker.broadcast('graphqlService.connected', {
@@ -42,6 +44,7 @@ export const createGraphqlMixin = ({
       schema,
       relationships,
       relationDefinitions,
+      directiveResolvers
     });
   },
   stopped() {
