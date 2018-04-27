@@ -17,7 +17,7 @@ import bookSvc from './types/Book';
 import chapterSvc from './types/chapter';
 import * as dataSource from './types/data';
 
-jest.setTimeout(20000);
+jest.setTimeout(10000);
 
 /**
  * @param {function} resolveQuery
