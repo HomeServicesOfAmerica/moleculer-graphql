@@ -14,7 +14,7 @@ function createMoleculerLink(opts: ServiceOptions): ApolloLink {
   return new ApolloLink(
     operation =>
       new Observable(observer => {
-        const { credentials, fetcherOptions } = operation.getContext();
+        const { credentials, fetcherOptions, graphqlContext } = operation.getContext();
         const { operationName, extensions, variables, query } = operation;
         const { broker, service } = opts;
 
@@ -23,7 +23,8 @@ function createMoleculerLink(opts: ServiceOptions): ApolloLink {
           query: print(query),
           variables,
           extensions,
-          operationName
+          operationName,
+          graphqlContext
         })
           .then(result => {
             observer.next(result);
