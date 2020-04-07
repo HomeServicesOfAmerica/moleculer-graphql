@@ -1,3 +1,5 @@
+# No longer Maintained
+
 ## Moleculer GraphQL
 
 The goal of this utility is to introduce a way to co-locate GraphQL Type definitions with the microservices that manage access to those resources. This allows for looser couplings with microservices and a centralized GraphQL api gateway.
